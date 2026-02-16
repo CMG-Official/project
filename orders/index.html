@@ -117,7 +117,7 @@
 
             try {
 
-                const res = await fetch(`/api/order?id=${id}`)
+                const res = await fetch(`https://project-ten-iota-65.vercel.app/api/order?id=${id}`)
                 const data = await res.json()
 
                 if (!res.ok) throw new Error(data.error || "Not found")
