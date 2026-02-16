@@ -1,186 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Status | Atlantis Labs</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Status | Atlantis Labs</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-        body {
-            background: #0f172a;
-            color: #e2e8f0;
-            font-family: Inter, sans-serif;
-        }
-
-        .card {
-            background: #1e293b;
-            border: 1px solid #334155;
-        }
-
-        .fade {
-            animation: fade .4s ease forwards;
-            opacity: 0;
-        }
-
-        @keyframes fade {
-            to {
-                opacity: 1
-            }
-        }
-    </style>
+<style>
+body{
+background:#0f172a;
+color:#e2e8f0;
+font-family:Inter,sans-serif;
+}
+.card{
+background:#1e293b;
+border:1px solid #334155;
+}
+.fade{
+animation:fade .4s ease forwards;
+opacity:0;
+}
+@keyframes fade{to{opacity:1}}
+</style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="max-w-md w-full card rounded-xl shadow-2xl p-8">
+<div class="max-w-md w-full card rounded-xl shadow-2xl p-8">
 
-        <!-- LOADING -->
-        <div id="loading" class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p class="text-slate-400">Fetching Order...</p>
-        </div>
+<!-- Loading -->
+<div id="loading" class="text-center">
+<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+<p class="text-slate-400">Fetching Order...</p>
+</div>
 
-        <!-- CONTENT -->
-        <div id="content" class="hidden fade">
+<!-- Content -->
+<div id="content" class="hidden fade">
 
-            <div class="text-center mb-6">
-                <h1 class="text-2xl font-bold text-white mb-1">
-                    Order #<span id="order-id">---</span>
-                </h1>
+<div class="text-center mb-6">
+<h1 class="text-2xl font-bold text-white mb-1">
+Order #<span id="order-id">---</span>
+</h1>
 
-                <span id="status" class="px-3 py-1 rounded-full text-sm font-bold border">
-                    Loading
-                </span>
-            </div>
+<span id="status" class="px-3 py-1 rounded-full text-sm font-bold border">
+Loading
+</span>
+</div>
 
-            <div class="space-y-4 text-sm">
+<div class="space-y-4 text-sm">
 
-                <div class="flex justify-between border-b border-slate-700 pb-2">
-                    <span class="text-slate-400">Service</span>
-                    <span id="service" class="font-semibold text-white">---</span>
-                </div>
+<div class="flex justify-between border-b border-slate-700 pb-2">
+<span class="text-slate-400">Service</span>
+<span id="service" class="font-semibold text-white">---</span>
+</div>
 
-                <div class="flex justify-between border-b border-slate-700 pb-2">
-                    <span class="text-slate-400">Cost</span>
-                    <span id="cost" class="font-semibold text-green-400">---</span>
-                </div>
+<div class="flex justify-between border-b border-slate-700 pb-2">
+<span class="text-slate-400">Cost</span>
+<span id="cost" class="font-semibold text-green-400">---</span>
+</div>
 
-                <div class="flex justify-between border-b border-slate-700 pb-2">
-                    <span class="text-slate-400">Customer</span>
-                    <div class="flex items-center gap-3">
-                        <div class="text-right">
-                            <div id="name" class="font-semibold text-white">---</div>
-                            <div id="cid" class="text-xs text-slate-500 font-mono">---</div>
-                        </div>
-                        <img id="avatar" class="w-10 h-10 rounded-full hidden border border-slate-600">
-                    </div>
-                </div>
+<div class="flex justify-between border-b border-slate-700 pb-2">
+<span class="text-slate-400">Customer</span>
 
-                <div class="flex justify-between border-b border-slate-700 pb-2">
-                    <span class="text-slate-400">Created</span>
-                    <span id="date">---</span>
-                </div>
+<div class="flex items-center gap-3">
 
-                <div id="cancelBox" class="hidden mt-4 bg-red-900/20 border border-red-500/50 p-3 rounded">
-                    <p class="text-red-400 text-xs uppercase font-bold mb-1">Cancellation Reason</p>
-                    <p id="cancelText"></p>
-                </div>
+<div class="text-right">
+<div id="name" class="font-semibold text-white">---</div>
+<div id="cid" class="text-xs text-slate-500 font-mono">---</div>
+</div>
 
-            </div>
+<img id="avatar" class="w-10 h-10 rounded-full hidden border border-slate-600">
 
-            <div class="mt-8 text-center text-xs text-slate-500">
-                Atlantis Labs • Secure Order System
-            </div>
+</div>
+</div>
 
-        </div>
+<div class="flex justify-between border-b border-slate-700 pb-2">
+<span class="text-slate-400">Created</span>
+<span id="date">---</span>
+</div>
 
-        <!-- ERROR -->
-        <div id="error" class="hidden text-center">
-            <p class="text-4xl mb-2">⚠️</p>
-            <h2 class="text-xl font-bold text-white">Order Not Found</h2>
-            <p id="errMsg" class="mt-4 text-red-400 text-sm"></p>
-        </div>
+<div id="cancelBox" class="hidden mt-4 bg-red-900/20 border border-red-500/50 p-3 rounded">
+<p class="text-red-400 text-xs uppercase font-bold mb-1">Cancellation Reason</p>
+<p id="cancelText"></p>
+</div>
 
-    </div>
+</div>
+
+<div class="mt-8 text-center text-xs text-slate-500">
+Atlantis Labs • Secure Order System
+</div>
+
+</div>
+
+<!-- Error -->
+<div id="error" class="hidden text-center">
+<p class="text-4xl mb-2">⚠️</p>
+<h2 class="text-xl font-bold text-white">Order Not Found</h2>
+<p id="errMsg" class="mt-4 text-red-400 text-sm"></p>
+</div>
+
+</div>
+
+<script>
+window.onload = async function(){
+
+const params = new URLSearchParams(window.location.search)
+const id = params.get("id")
+
+if(!id){
+showError("Missing order id")
+return
+}
+
+try{
+
+const res = await fetch(`${location.origin}/api/order?id=${id}`)
+const data = await res.json()
+
+if(!res.ok)
+throw new Error(data.error || "Order not found")
+
+render(data)
+
+}catch(err){
+showError(err.message)
+}
+
+}
 
 
-    <script>
-        async function loadOrder() {
+// ---------- RENDER ----------
+function render(o){
 
-            const params = new URLSearchParams(location.search)
-            const id = params.get("id")
+document.getElementById("loading").classList.add("hidden")
+document.getElementById("content").classList.remove("hidden")
 
-            if (!id) return showError("Missing order id")
+document.getElementById("order-id").innerText = o.id
+document.getElementById("service").innerText = o.service_type || "N/A"
+document.getElementById("cost").innerText = o.cost || "$0"
+document.getElementById("name").innerText = o.customer_name || "Unknown"
+document.getElementById("cid").innerText = "ID: " + o.customer_id
 
-            try {
+// avatar
+if(o.customer_avatar){
+const img = document.getElementById("avatar")
+img.src = o.customer_avatar
+img.classList.remove("hidden")
+}
 
-                const res = await fetch(`https://project-ten-iota-65.vercel.app/api/order?id=${id}`)
-                const data = await res.json()
+// date
+document.getElementById("date").innerText =
+new Date(o.created_at).toLocaleDateString("en-US",{
+year:"numeric",
+month:"long",
+day:"numeric"
+})
 
-                if (!res.ok) throw new Error(data.error || "Not found")
 
-                render(data)
+// status badge
+const badge = document.getElementById("status")
+badge.innerText = o.status
+badge.className = "px-3 py-1 rounded-full text-sm font-bold border "
 
-            } catch (e) {
-                showError(e.message)
-            }
+if(o.status === "Completed"){
+badge.classList.add("bg-green-500/20","text-green-400","border-green-500/50")
+}
 
-        }
+else if(o.status === "In Progress" || o.status === "ACTIVE"){
+badge.innerText="In Progress"
+badge.classList.add("bg-yellow-500/20","text-yellow-400","border-yellow-500/50")
+}
 
-        function render(o) {
+else if(o.status === "Canceled"){
+badge.classList.add("bg-red-500/20","text-red-400","border-red-500/50")
 
-            loading.classList.add("hidden")
-            content.classList.remove("hidden")
+document.getElementById("cancelBox").classList.remove("hidden")
+document.getElementById("cancelText").innerText =
+o.cancellation_reason || "No reason provided"
+}
 
-            order - id.innerText=o.id
-            service.innerText = o.service_type || "N/A"
-            cost.innerText = o.cost || "$0"
-            name.innerText = o.customer_name || "Unknown"
-            cid.innerText = "ID: " + o.customer_id
+else{
+badge.classList.add("bg-gray-700","text-gray-300")
+}
 
-            if (o.customer_avatar) {
-                avatar.src = o.customer_avatar
-                avatar.classList.remove("hidden")
-            }
+}
 
-            date.innerText = new Date(o.created_at).toLocaleDateString()
 
-            const badge = status
-            badge.innerText = o.status
-            badge.className = "px-3 py-1 rounded-full text-sm font-bold border "
-
-            switch (o.status) {
-                case "Completed":
-                    badge.classList.add("bg-green-500/20", "text-green-400", "border-green-500/50")
-                    break
-                case "In Progress":
-                case "ACTIVE":
-                    badge.innerText = "In Progress"
-                    badge.classList.add("bg-yellow-500/20", "text-yellow-400", "border-yellow-500/50")
-                    break
-                case "Canceled":
-                    badge.classList.add("bg-red-500/20", "text-red-400", "border-red-500/50")
-                    cancelBox.classList.remove("hidden")
-                    cancelText.innerText = o.cancellation_reason || "No reason"
-                    break
-                default:
-                    badge.classList.add("bg-gray-700", "text-gray-300")
-            }
-
-        }
-
-        function showError(msg) {
-            loading.classList.add("hidden")
-            error.classList.remove("hidden")
-            errMsg.innerText = msg
-        }
-
-        loadOrder()
-    </script>
+// ---------- ERROR ----------
+function showError(msg){
+document.getElementById("loading").classList.add("hidden")
+document.getElementById("error").classList.remove("hidden")
+document.getElementById("errMsg").innerText = msg
+}
+</script>
 
 </body>
-
 </html>
